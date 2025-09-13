@@ -296,34 +296,31 @@ class EditGroupSettingsDialogState extends State<EditGroupSettingsDialog> {
                 ),
                 const SizedBox(height: 16),
                 const Text('Welche Merkmale müssen zutreffen?'),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      child: RadioListTile<String>(
-                        title: const Text('eines'),
-                        value: 'OR',
-                        groupValue: orFilter ? 'OR' : 'AND',
-                        onChanged: (String? value) {
-                          setState(() {
-                            orFilter = value == 'OR';
-                          });
-                        },
+                // ---- MIGRATION: RadioListTile -> RadioGroup ancestor ----
+                RadioGroup<String>(
+                  groupValue: orFilter ? 'OR' : 'AND',
+                  onChanged: (String? value) {
+                    setState(() {
+                      orFilter = (value ?? 'OR') == 'OR';
+                    });
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        child: RadioListTile<String>(
+                          title: const Text('eines'),
+                          value: 'OR',
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: RadioListTile<String>(
-                        title: const Text('alle'),
-                        value: 'AND',
-                        groupValue: orFilter ? 'OR' : 'AND',
-                        onChanged: (String? value) {
-                          setState(() {
-                            orFilter = value == 'OR';
-                          });
-                        },
+                      Expanded(
+                        child: RadioListTile<String>(
+                          title: const Text('alle'),
+                          value: 'AND',
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 16),
                 if (orFilter)
