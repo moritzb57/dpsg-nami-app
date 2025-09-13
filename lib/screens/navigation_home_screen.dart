@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nami/screens/kalender/kalender.dart';
 import 'package:nami/screens/knowledge_chat/knowledge_chat.dart';
 import 'package:nami/screens/meine_stufe/meine_stufe.dart';
 import 'package:nami/screens/mitgliedsliste/mitglied_liste.dart';
@@ -107,6 +108,11 @@ class NavigationHomeScreenState extends State<NavigationHomeScreen> {
           screenView = const KnowledgeChat();
         });
         Wiredash.trackEvent('Change drawner index', data: {'page': 'Chat'});
+      } else if (drawerIndex == DrawerIndex.kalender) {
+        setState(() {
+          screenView = const KalenderScreen();
+        });
+        Wiredash.trackEvent('Change drawner index', data: {'page': 'Kalender'});
       } else {
         // Hier alle weiteren Naviagtionspunkte des Seitenmenüs definieren
       }

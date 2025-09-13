@@ -73,6 +73,11 @@ class HomeDrawerState extends State<HomeDrawer> {
         icon: const Icon(Icons.analytics),
       ),
       DrawerList(
+        index: DrawerIndex.kalender,
+        labelName: 'Kalender',
+        icon: const Icon(Icons.calendar_month_rounded),
+      ),
+      DrawerList(
         index: DrawerIndex.profil,
         labelName: 'Profil',
         icon: const Icon(Icons.person),
@@ -358,7 +363,15 @@ class HomeDrawerState extends State<HomeDrawer> {
   }
 }
 
-enum DrawerIndex { meineStufe, mitglieder, stats, settings, chat, profil }
+enum DrawerIndex {
+  meineStufe,
+  mitglieder,
+  stats,
+  kalender,
+  settings,
+  chat,
+  profil,
+}
 
 class DrawerList {
   DrawerList({

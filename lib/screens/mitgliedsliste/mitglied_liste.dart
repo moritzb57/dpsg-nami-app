@@ -3,9 +3,9 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
 import 'package:nami/screens/mitgliedsliste/mitglied_details.dart';
 import 'package:nami/screens/mitgliedsliste/mitglied_liste_filter.dart';
+import 'package:nami/screens/widgets/filter_group_widget.dart';
 import 'package:nami/screens/widgets/status_information_banner.dart';
 import 'package:nami/services/member_service.dart';
-import 'package:nami/utilities/hive/custom_group.dart';
 import 'package:nami/utilities/hive/mitglied.dart';
 import 'package:nami/utilities/hive/settings.dart';
 import 'package:nami/utilities/mitglied.filterAndSort.dart';
@@ -170,77 +170,6 @@ class MitgliedsListeState extends State<MitgliedsListe> {
     }
   }
 
-  Widget _buildFilterGroup(BuildContext context) {
-    Map<String, CustomGroup> gruppen = Provider.of<MemberListSettingsHandler>(
-      context,
-    ).filterOptions.filterGroup;
-
-    // Zeige keine Gruppe an, die keine Mitglieder haben
-    Map<String, CustomGroup> customGruppen = {};
-
-    gruppen.forEach((key, value) {
-      if (!value.static ||
-          (value.stufe != null &&
-              mitglieder.any(
-                (mitglied) =>
-                    value.stufe == mitglied.currentStufeWithoutLeiter ||
-                    (value.stufe == Stufe.LEITER &&
-                        mitglied.isMitgliedLeiter()),
-              ))) {
-        customGruppen[key] = value;
-      }
-    });
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: customGruppen.entries.map((entry) {
-            String groupName = entry.key;
-            CustomGroup group = entry.value;
-
-            Widget groupImage;
-            if (group.stufe == null) {
-              groupImage = Icon(group.icon, semanticLabel: '$groupName Filter');
-            } else {
-              groupImage = Image.asset(
-                semanticLabel: '$groupName Filter',
-                group.stufe!.imagePath ?? Stufe.LEITER.imagePath!,
-                width: 30.0,
-                height: 30.0,
-                cacheHeight: 100,
-              );
-            }
-
-            return GestureDetector(
-              onTap: () {
-                Provider.of<MemberListSettingsHandler>(
-                  context,
-                  listen: false,
-                ).updateFilterGroupActive(groupName, !group.active);
-              },
-              child: Container(
-                width: 50.0,
-                height: 50.0,
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 4.0,
-                ), // Abstand zwischen den Elementen
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: group.active
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context).colorScheme.secondaryContainer,
-                ),
-                child: Center(child: groupImage),
-              ),
-            );
-          }).toList(),
-        ),
-      ),
-    );
-  }
-
   Widget _buildSearchBar(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 0, 12, 10),
@@ -337,7 +266,7 @@ class MitgliedsListeState extends State<MitgliedsListe> {
             body: Column(
               children: <Widget>[
                 const StatusInformationBanner(),
-                _buildFilterGroup(context),
+                FilterGroupWidget(mitglieder: mitglieder),
                 _buildSearchBar(context),
                 Expanded(
                   child: _buildMemberList(
