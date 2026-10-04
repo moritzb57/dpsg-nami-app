@@ -41,10 +41,25 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
+
+            manifestPlaceholders = [
+                appName: "NaMi (Dev)",
+                oauthScheme: "de.jlange.nami.app.dev"
+            ]
+        }
+
         release {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            manifestPlaceholders = [
+                appName: "NaMi",
+                oauthScheme: "de.jlange.nami.app"
+            ]
         }
     }
 }

@@ -110,6 +110,7 @@ flutter:
     - assets/supporter/icons/
     - assets/ai_kontext/
     - .env
+    - .env.dev
     - assets/changelog.json
 
   fonts:

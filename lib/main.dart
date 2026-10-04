@@ -6,6 +6,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -126,7 +127,7 @@ void main() {
       WidgetsFlutterBinding.ensureInitialized();
       final appDocDir = await getApplicationDocumentsDirectory();
       Hive.init(appDocDir.path);
-      await dotenv.load(fileName: ".env");
+      await dotenv.load(fileName: kDebugMode ? ".env.dev" : ".env");
       await initializeDateFormatting("de_DE", null);
       Intl.defaultLocale = "de_DE";
       _installGlobalErrorHandlers();

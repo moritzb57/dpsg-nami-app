@@ -11,6 +11,9 @@ analyzer:
   exclude:
     # Wird nur in einem Worktree von v0.2.8 kompiliert (Upgrade-Tests).
     - tool/legacy_fixture/v0_2_8/**
+    - build/**
+    - android/**
+    - ios/**
   errors:
     use_build_context_synchronously: ignore
 include: package:flutter_lints/flutter.yaml
